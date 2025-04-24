@@ -4,17 +4,17 @@
 
 :root {
   --background-dark: #3d3d3d;
-  --background-teal: #578e7e;
+  --background-teal: #41685d;
   --text-dark: #f5ecd5;
   --text-light: #fffaec;
   --font-primary: "Poppins", sans-serif;
 }
 
 @theme inline {
-  --color-black: var(--background-teal);
-  --color-white: var(--background-dark);
-  --color-text-primary: var(--text-dark);
-  --color-text-secondary: var(--text-light);
+  --color-teal: var(--background-teal);
+  --color-dark: var(--background-dark);
+  --color-darker: var(--text-dark);
+  --color-lighter: var(--text-light);
   --font-primary: var(--font-primary);
 }
 
