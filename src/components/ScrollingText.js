@@ -91,7 +91,7 @@ export default function ScrollingText({ text, baseVelocity = 50, size = 8 }) {
       >
         {Array.from({ length: repeats }).map((_, i) => (
           <span key={i} style={{ marginRight: "2rem" }}>
-            {text.toUpperCase()}.
+            {text.toUpperCase()} .
           </span>
         ))}
       </motion.div>

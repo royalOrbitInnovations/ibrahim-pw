@@ -1,12 +1,15 @@
 import Banner from "@/components/Banner";
-import ScrollingText from "@/components/ScrollingText";
+import Books from "@/components/Books";
+import Contact from "@/components/Contact";
+import Section2 from "@/components/Section2";
 
 export default function page() {
   return (
     <div>
       <Banner />
-      <ScrollingText text="courses" baseVelocity={200} size={5} />
-      <div className="h-[100vh]"></div>
+      <Section2 />
+      <Books />
+      <Contact />
     </div>
   );
 }

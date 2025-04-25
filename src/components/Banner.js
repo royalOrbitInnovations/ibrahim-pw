@@ -1,8 +1,6 @@
-// components/Banner.jsx
 "use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import BgLines from "./BgLines";
 
 export default function Banner() {
   const containerVariants = {
@@ -39,9 +37,7 @@ export default function Banner() {
   };
 
   return (
-    <div className="relative bg-teal h-screen overflow-hidden">
-      <BgLines />
-
+    <div className="relative bg-teal/10 h-screen overflow-hidden">
       <motion.div
         className="relative grid grid-cols-3 place-items-center text-white px-40 h-full"
         variants={containerVariants}
