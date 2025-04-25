@@ -1,14 +1,16 @@
 "use client";
 
 import React, { useRef, useState } from "react";
+import dynamic from "next/dynamic"; // ← load on the client only
 import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
-import Lottie from "lottie-react";
 import animationData from "@/contact.json";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 export default function Contact() {
   const formRef = useRef();
-  const [status, setStatus] = useState("idle");
+  const [status, setStatus] = useState("idle"); // 'idle' | 'sending' | 'success' | 'error'
 
   // EmailJS credentials
   const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
@@ -30,6 +32,7 @@ export default function Contact() {
     }
   };
 
+  /* ---------------- framer-motion variants ---------------- */
   const inputVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (i) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1 } }),
@@ -41,9 +44,10 @@ export default function Contact() {
     error: { x: [-3, 3, -3, 3, 0], transition: { duration: 0.4 } },
   };
 
+  /* ---------------------------- UI ------------------------ */
   return (
     <section className="flex flex-col md:flex-row items-start md:items-center bg-transparent px-8 md:px-24 py-24">
-      {/* Animation + Info Column */}
+      {/* Animation + headline */}
       <motion.div
         className="md:w-1/2 mb-10 md:mb-0 text-center md:text-left"
         initial={{ x: -50, opacity: 0 }}
@@ -57,8 +61,9 @@ export default function Contact() {
             className="w-64 h-64 mx-auto md:mx-0"
           />
         </div>
+
         <h2 className="text-5xl font-bold text-darker mb-4">
-          Ready to Collaborate?
+          Ready&nbsp;to&nbsp;Collaborate?
         </h2>
         <p className="text-lg text-lighter mb-6">
           Drop your details below and let’s start building something exceptional
@@ -66,7 +71,7 @@ export default function Contact() {
         </p>
       </motion.div>
 
-      {/* Form Column */}
+      {/* Contact form */}
       <motion.div
         className="md:w-1/2"
         initial={{ x: 50, opacity: 0 }}
@@ -76,7 +81,7 @@ export default function Contact() {
         <motion.form
           ref={formRef}
           onSubmit={handleSubmit}
-          className="bg-white rounded-2xl shadow-lg p-10 grid gap-6 backdrop-blur-sm"
+          className="bg-white/70 rounded-2xl shadow-lg p-10 grid gap-6 backdrop-blur-sm"
           initial={{ scale: 0.9 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 90, damping: 15 }}
