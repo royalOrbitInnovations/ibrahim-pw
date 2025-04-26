@@ -64,7 +64,7 @@ export default function Books() {
 
   return (
     <section className="flex flex-col items-center gap-12 pt-24">
-      <ScrollingText text="Books" baseVelocity={100} size={5} />
+      <ScrollingText text="Books" baseVelocity={100} size={3} />
 
       {/* ---------- slider viewport -------------------------------- */}
       <div className="relative w-full px-6 max-w-[80vw] overflow-hidden">

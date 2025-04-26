@@ -54,7 +54,7 @@ export default function Contact() {
 
   return (
     <>
-      <ScrollingText text="Let’s Connect" baseVelocity={200} />
+      <ScrollingText text="Let’s Connect" baseVelocity={200} size={3} />
       <section className="flex flex-col md:flex-row items-center justify-center gap-16 bg-transparent px-[15rem] py-24">
         {/* Text + carousel */}
         <motion.div
