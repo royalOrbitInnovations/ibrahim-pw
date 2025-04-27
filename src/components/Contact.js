@@ -1,25 +1,59 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import Image from "next/image";
-import emailjs from "@emailjs/browser";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import ScrollingText from "./ScrollingText";
+import emailjs from "@emailjs/browser";
+import {
+  FaLinkedin,
+  FaInstagram,
+  FaFacebook,
+  FaBehance,
+  FaTwitter,
+  FaEnvelope,
+} from "react-icons/fa";
 
-const images = ["/contact.jpg", "/contact.jpg", "/contact.jpg"];
+const socialLinks = [
+  {
+    name: "LinkedIn",
+    url: "https://www.linkedin.com/in/yourprofile",
+    icon: <FaLinkedin size={32} aria-label="LinkedIn" />,
+  },
+  {
+    name: "Instagram",
+    url: "https://www.instagram.com/yourprofile",
+    icon: <FaInstagram size={32} aria-label="Instagram" />,
+  },
+  {
+    name: "Facebook",
+    url: "https://www.facebook.com/yourprofile",
+    icon: <FaFacebook size={32} aria-label="Facebook" />,
+  },
+  {
+    name: "Behance",
+    url: "https://www.behance.net/yourprofile",
+    icon: <FaBehance size={32} aria-label="Behance" />,
+  },
+  {
+    name: "Twitter",
+    url: "https://twitter.com/yourprofile",
+    icon: <FaTwitter size={32} aria-label="Twitter" />,
+  },
+  {
+    name: "Email",
+    url: "mailto:example@gmail.com",
+    icon: <FaEnvelope size={32} aria-label="Email" />,
+  },
+];
 
 export default function Contact() {
   const formRef = useRef();
   const [status, setStatus] = useState("idle");
-  const [currentIdx, setCurrentIdx] = useState(0);
 
-  // cycle slides every 3s
+  // reset on success
   useEffect(() => {
-    const iv = setInterval(() => {
-      setCurrentIdx((i) => (i + 1) % images.length);
-    }, 3000);
-    return () => clearInterval(iv);
-  }, []);
+    if (status === "success" && formRef.current) formRef.current.reset();
+  }, [status]);
 
   // EmailJS credentials
   const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
@@ -32,9 +66,8 @@ export default function Contact() {
     try {
       await emailjs.sendForm(serviceId, templateId, formRef.current, publicKey);
       setStatus("success");
-      formRef.current.reset();
     } catch (err) {
-      console.error("EmailJS Error:", err);
+      console.error(err);
       setStatus("error");
     } finally {
       setTimeout(() => setStatus("idle"), 5000);
@@ -55,47 +88,64 @@ export default function Contact() {
   return (
     <>
       <ScrollingText text="Let’s Connect" baseVelocity={200} size={3} />
-      <section className="flex flex-col md:flex-row items-center justify-center gap-16 bg-transparent px-[15rem] py-24">
-        {/* Text + carousel */}
+      <section className="flex flex-col md:flex-row items-start justify-center gap-16 bg-transparent px-16 py-24">
+        {/* Socials Section */}
         <motion.div
-          className="md:w-1/2 text-left flex flex-col justify-center"
+          className="md:w-1/2 flex flex-col items-start justify-center space-y-6"
           initial={{ x: -50, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          viewport={{ once: true }}
           transition={{ ease: "easeOut", duration: 0.8 }}
         >
-          <div className="relative h-[37rem] w-full md:w-[60%] mb-8 overflow-hidden mx-auto">
-            <AnimatePresence initial={false} mode="wait">
-              <motion.div
-                key={currentIdx}
-                className="absolute inset-0"
-                initial={{ x: 100, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: -100, opacity: 0 }}
-                transition={{ duration: 0.8 }}
+          <h2 className="text-3xl font-bold text-darker pb-[2rem]">Socials</h2>
+
+          <motion.div
+            className="grid grid-cols-2 gap-4"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.1 } },
+            }}
+          >
+            {socialLinks.map((link, idx) => (
+              <motion.a
+                key={link.name}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-3 text-darker hover:text-teal-600"
+                whileHover={{ x: 5 }}
+                whileTap={{ scale: 0.95 }}
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                transition={{ duration: 0.3, delay: idx * 0.1 }}
               >
-                <Image
-                  src={images[currentIdx]}
-                  alt={`Slide ${currentIdx}`}
-                  fill
-                  style={{ objectFit: "cover" }}
-                  className="rounded-lg"
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
+                {link.icon}
+                <span className=" pl-[1rem] text-base font-medium">
+                  {link.name}
+                </span>
+              </motion.a>
+            ))}
+          </motion.div>
         </motion.div>
 
-        {/* Form */}
+        {/* Contact Form Section */}
         <motion.div
-          className="w-full md:w-[35%]"
+          className="w-full md:w-[35%] flex flex-col items-start"
           initial={{ x: 50, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          viewport={{ once: true }}
           transition={{ ease: "easeOut", duration: 0.8 }}
         >
+          <h3 className="text-2xl font-semibold text-darker mb-4">Say Hello</h3>
           <motion.form
             ref={formRef}
             onSubmit={handleSubmit}
-            className="bg-slate-50/90 rounded-2xl shadow-xl p-10 grid gap-6 backdrop-blur-sm"
+            className="bg-slate-50\/90 rounded-2xl shadow-xl p-10 grid gap-6 w-full backdrop-blur-sm"
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 90, damping: 15 }}
