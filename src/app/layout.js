@@ -82,12 +82,7 @@ export default function RootLayout({ children }) {
             "@type": "Person",
             name: "Melvin Prince",
             url: "https://www.melvinprince.io",
-            jobTitle: "Web Developer and Designer",
-            worksFor: {
-              "@type": "Organization",
-              name: "Royal Orbit Innovations",
-              url: "https://portfolio.roi.qa",
-            },
+            jobTitle: "Full Stack Developer",
           })}
         </Script>
       </head>
