@@ -4,10 +4,10 @@ import React, { useRef, useState, useEffect } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { podcasts } from "@/data/podcasts";
+import { blogs } from "@/data/blogs";
 import ScrollingText from "./ScrollingText";
 
-// --- define your custom drag cursor variants ---
+// --- custom drag cursor variants ---
 const cursorVariants = {
   hidden: { opacity: 0, scale: 0 },
   visible: ({ x, y }) => ({
@@ -19,7 +19,7 @@ const cursorVariants = {
   }),
 };
 
-export default function PodcastCarousel() {
+export default function BlogCarousel() {
   const outerRef = useRef(null);
   const trackRef = useRef(null);
   const controls = useAnimation();
@@ -30,7 +30,7 @@ export default function PodcastCarousel() {
   const [showCursor, setShowCursor] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
-  // start entrance animation
+  // entrance animation
   useEffect(() => {
     if (isInView) controls.start("visible");
   }, [isInView, controls]);
@@ -39,20 +39,20 @@ export default function PodcastCarousel() {
   useEffect(() => {
     if (!outerRef.current || !trackRef.current) return;
     setDragWidth(trackRef.current.scrollWidth - outerRef.current.offsetWidth);
-  }, [podcasts]);
+  }, [blogs]);
 
   return (
-    <>
-      <ScrollingText text="podcasts" baseVelocity={200} size={3} />
+    <div className="pt-[5rem]">
+      <ScrollingText text="blogs" baseVelocity={150} size={3} />
       <div className="px-[15rem] ">
         <div
           ref={outerRef}
           className="relative overflow-x-hidden pt-[5rem] pb-[2rem]"
-          onMouseMove={(e) => setCursor({ x: e.clientX, y: e.clientY })}
+          onMouseMove={(e) => setCursor({ x: e.clientX, y: e.clientY - 100 })}
           onMouseEnter={() => setShowCursor(true)}
           onMouseLeave={() => setShowCursor(false)}
         >
-          {/* custom drag cursor */}
+          {/* drag cursor */}
           <motion.div
             className="pointer-events-none fixed z-[9999] flex items-center justify-center w-30 h-30 text-[5rem] rounded-full bg-white text-black -translate-x-[15rem]  -translate-y-[30rem]"
             variants={cursorVariants}
@@ -62,10 +62,10 @@ export default function PodcastCarousel() {
             {"<>"}
           </motion.div>
 
-          {/* draggable track */}
+          {/* draggable list */}
           <motion.ul
             ref={trackRef}
-            className="flex select-none gap-[4rem] pl-4 cursor-grab active:cursor-grabbing"
+            className="flex select-none gap-[3rem] pl-4 cursor-grab active:cursor-grabbing"
             drag="x"
             dragConstraints={{ right: 0, left: -dragWidth }}
             whileTap={{ scale: 0.93 }}
@@ -76,51 +76,52 @@ export default function PodcastCarousel() {
               visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
             }}
           >
-            {podcasts.map((podcast, idx) => (
-              <li key={idx} className="relative">
+            {blogs.map((blog, idx) => (
+              <li key={blog.id} className="relative">
                 <motion.div
-                  className="w-[50rem] h-[50rem] overflow-hidden rounded-2xl border-2 bg-darker shadow-lg transition-all duration-300 hover:scale-[1.02]"
+                  className="w-[40rem] overflow-hidden rounded-2xl border-2 border-gray-200 bg-white shadow-md transition-all duration-300 hover:scale-[1.02]"
                   onHoverStart={() => setHoveredIndex(idx)}
                   onHoverEnd={() => setHoveredIndex(null)}
                 >
                   {/* image */}
-                  <div className="relative h-[30rem] w-[50rem]">
+                  <div className="relative h-[25rem] w-[40rem]">
                     <Image
-                      src={podcast.image}
-                      alt={podcast.title}
+                      src={blog.image}
+                      alt={blog.title}
                       fill
                       className="object-cover pointer-events-none select-none"
                       draggable={false}
                     />
                   </div>
 
-                  {/* text */}
+                  {/* content */}
                   <div className="mt-[2rem] flex flex-col gap-2 px-[2rem] py-[2rem] text-black">
-                    <h3 className="line-clamp-1 text-[2.5rem] font-bold">
-                      {podcast.title}
+                    <h3 className="line-clamp-1 text-[2.2rem] font-bold">
+                      {blog.title}
                     </h3>
-                    <p className="line-clamp-4 text-[1.5rem] leading-relaxed opacity-80">
-                      {podcast.description}
+                    <p className="line-clamp-3 text-[1.4rem] leading-relaxed opacity-80">
+                      {blog.shortDescription}
                     </p>
-                    {/* Listen Now overlay */}
+
+                    {/* Read More overlay */}
                     {hoveredIndex === idx && (
                       <motion.div
-                        className="absolute inset-0 flex items-center justify-center bg-black/50"
+                        className="absolute inset-0 flex items-center justify-center bg-black/40"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.3 }}
                       >
                         <Link
-                          href={podcast.url}
+                          href={blog.link}
                           target="_blank"
-                          className="px-6 py-3 bg-teal-600 text-white text-[1.5rem] rounded-full hover:bg-teal-500"
+                          className="px-6 py-3 bg-teal-600 text-white text-[1.3rem] rounded-full hover:bg-teal-500"
                         >
-                          Listen Now
+                          Read More
                         </Link>
                       </motion.div>
                     )}
 
-                    {/* placeholder for spacing at bottom */}
+                    {/* spacer */}
                     <div className="pt-4" />
                   </div>
                 </motion.div>
@@ -129,6 +130,6 @@ export default function PodcastCarousel() {
           </motion.ul>
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -17,7 +17,7 @@ const cursorVariants = {
   }),
 };
 
-export default function Carousel({ data = [], linkText }) {
+export default function Carousel({ data = [], linkText, color = "white" }) {
   /* ---------- refs ---------------------------------------------------- */
   const outerRef = useRef(null);
   const trackRef = useRef(null);
@@ -51,7 +51,7 @@ export default function Carousel({ data = [], linkText }) {
     >
       {/* custom “<>” cursor */}
       <motion.div
-        className="pointer-events-none fixed z-[9999] flex items-center justify-center w-30 h-30 text-[5rem] rounded-full bg-white text-black -translate-x-1/2 -translate-y-1/2"
+        className="pointer-events-none fixed z-[9999] flex items-center justify-center w-30 h-30 text-[5rem] rounded-full bg-white text-black -translate-x-[15rem]  -translate-y-[30rem]"
         variants={cursorVariants}
         animate={showCursor ? "visible" : "hidden"}
         custom={cursor}
@@ -75,7 +75,11 @@ export default function Carousel({ data = [], linkText }) {
       >
         {data.map((item) => (
           <li key={item.id}>
-            <motion.div className="w-[50rem] overflow-hidden rounded-2xl border-2 bg-gray-900 shadow-lg transition-all duration-300 hover:scale-[1.02]">
+            <motion.div
+              className={`w-[50rem] overflow-hidden rounded-2xl border-2  shadow-lg transition-all duration-300 hover:scale-[1.02] ${
+                color === "white" ? "bg-white" : "bg-dark"
+              }`}
+            >
               {/* image */}
               <div className="relative h-[30rem] w-[50rem]">
                 <Image
@@ -88,7 +92,11 @@ export default function Carousel({ data = [], linkText }) {
               </div>
 
               {/* text */}
-              <div className="mt-[2rem] flex flex-col gap-2 px-[2rem] py-[2rem] text-white">
+              <div
+                className={`mt-[2rem] flex flex-col gap-2 px-[2rem] py-[2rem] ${
+                  color === "white" ? "text-black" : "text-darker"
+                }`}
+              >
                 <h3 className="line-clamp-1 text-[2.5rem] font-bold">
                   {item.name}
                 </h3>

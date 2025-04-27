@@ -8,7 +8,7 @@ export default function Section2() {
     <div className="pt-[10rem] min-h-[100vh]">
       <ScrollingText text="courses & workshops" baseVelocity={200} size={3} />
       <div className="px-[15rem]">
-        <Carousel data={courses} linkText="Get Details" />
+        <Carousel data={courses} linkText="Get Details" color="test" />
       </div>
       <div className="px-[15rem]">
         <Carousel data={workshops} linkText="Explore Workshop" />
