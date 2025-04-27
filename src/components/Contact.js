@@ -50,12 +50,10 @@ export default function Contact() {
   const formRef = useRef();
   const [status, setStatus] = useState("idle");
 
-  // reset on success
   useEffect(() => {
     if (status === "success" && formRef.current) formRef.current.reset();
   }, [status]);
 
-  // EmailJS credentials
   const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
   const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
   const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
@@ -78,6 +76,7 @@ export default function Contact() {
     hidden: { opacity: 0, y: 20 },
     visible: (i) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1 } }),
   };
+
   const buttonVariants = {
     idle: { scale: 1 },
     hover: { scale: 1.05 },
@@ -88,52 +87,71 @@ export default function Contact() {
   return (
     <>
       <ScrollingText text="Let’s Connect" baseVelocity={200} size={3} />
-      <section className="flex flex-col md:flex-row items-start justify-center gap-16 bg-transparent px-16 py-24">
-        {/* Socials Section */}
+      <section className="flex flex-col md:flex-row items-center justify-around gap-16 bg-transparent px-[15rem] py-24">
+        {/* Left Side: CTA + Socials */}
         <motion.div
-          className="md:w-1/2 flex flex-col items-start justify-center space-y-6"
+          className="md:w-1/2 flex flex-col items-center justify-center space-y-10"
           initial={{ x: -50, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ ease: "easeOut", duration: 0.8 }}
         >
-          <h2 className="text-3xl font-bold text-darker pb-[2rem]">Socials</h2>
+          {/* CTA Section */}
+          <div className="space-y-6 flex flex-col justify-center items-center">
+            <h2 className="text-4xl font-bold text-darker text-center">
+              Let&apos;s Build Something Amazing Together
+            </h2>
+            <p className=" text-slate-600 pt-[2rem] text-2xl w-[70%] text-justify">
+              Ready to bring your ideas to life? I specialize in crafting
+              impactful digital experiences tailored exactly to your needs.
+              Whether it&apos;s a website, branding, or marketing strategy,
+              I&apos;m here to transform your vision into reality. Let&apos;s
+              collaborate and create something extraordinary that resonates with
+              your audience and leaves a lasting impression.
+            </p>
+          </div>
 
-          <motion.div
-            className="grid grid-cols-2 gap-4"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.1 } },
-            }}
-          >
-            {socialLinks.map((link, idx) => (
-              <motion.a
-                key={link.name}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-3 text-darker hover:text-teal-600"
-                whileHover={{ x: 5 }}
-                whileTap={{ scale: 0.95 }}
-                variants={{
-                  hidden: { opacity: 0, y: 10 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-                transition={{ duration: 0.3, delay: idx * 0.1 }}
-              >
-                {link.icon}
-                <span className=" pl-[1rem] text-base font-medium">
-                  {link.name}
-                </span>
-              </motion.a>
-            ))}
-          </motion.div>
+          {/* Socials Section */}
+          <div className="pt-10">
+            <h3 className="text-2xl font-bold text-darker pb-6">
+              Connect with Me.
+            </h3>
+            <motion.div
+              className="flex gap-[1rem]"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={{
+                hidden: {},
+                visible: { transition: { staggerChildren: 0.1 } },
+              }}
+            >
+              {socialLinks.map((link, idx) => (
+                <motion.a
+                  key={link.name}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-3 text-darker hover:text-teal-600"
+                  whileHover={{ x: 5 }}
+                  whileTap={{ scale: 0.95 }}
+                  variants={{
+                    hidden: { opacity: 0, y: 10 },
+                    visible: { opacity: 1, y: 0 },
+                  }}
+                  transition={{ duration: 0.3, delay: idx * 0.1 }}
+                >
+                  {link.icon}
+                  <span className="pl-3 text-base font-medium">
+                    {link.name}
+                  </span>
+                </motion.a>
+              ))}
+            </motion.div>
+          </div>
         </motion.div>
 
-        {/* Contact Form Section */}
+        {/* Right Side: Form (Original Design) */}
         <motion.div
           className="w-full md:w-[35%] flex flex-col items-start"
           initial={{ x: 50, opacity: 0 }}
@@ -145,7 +163,7 @@ export default function Contact() {
           <motion.form
             ref={formRef}
             onSubmit={handleSubmit}
-            className="bg-slate-50\/90 rounded-2xl shadow-xl p-10 grid gap-6 w-full backdrop-blur-sm"
+            className="bg-slate-50/10 rounded-2xl shadow-xl p-10 grid gap-6 w-full backdrop-blur-sm"
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 90, damping: 15 }}
